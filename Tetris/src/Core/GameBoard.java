@@ -1,6 +1,5 @@
+//Class represents playing board and actions with board (adding and deleting Shapes)
 package Core;
-
-//Class represents playing board and actions with board
 public class GameBoard {
     private final int rowCount;
     private final int colCount;
@@ -97,6 +96,7 @@ public class GameBoard {
     public int updateBoard() {
         boolean[] rowComplete = new boolean[rowCount];
         int completeRowsCount = 0;
+        int lastRowDeleted = 0;
 
         // Check witch rows are complete
         for (int j = 0; j < rowCount; j++) {
@@ -113,18 +113,24 @@ public class GameBoard {
                     if (board[j][i] != ' ') {
                         board[j][i] = ' ';
                     }
+                    lastRowDeleted = j;
                 }
             }
-            // Move upper tiles down
-            if(completeRowsCount != 0){
+        }
+
+        // Move upper tiles from last deleted row down
+        if (completeRowsCount != 0) {
+            for (int j = lastRowDeleted - 1; j >= 0; j--) {
                 for (int i = 1; i < colCount - 1; i++) {
                     if (board[j][i] != ' ') {
-                        board[j + 1][i] = board[j][i];
+                        board[j + completeRowsCount][i] = board[j][i];
                         board[j][i] = ' ';
                     }
                 }
             }
         }
+
         return completeRowsCount;
     }
+
 }

@@ -1,10 +1,11 @@
-//Main Core.Game Class representing logic of the game
-//Creates and maintains Core.GameBoard
-//Keeping track of live cycle of every Core.Shape that is added to board
+//Main Game Class representing logic of the game
+//Creates and maintains GameBoard
+//Keeping track of live cycle of every Shape that is added to board
 //Keeping track and updating score
+//Generating Shape queue
+//Implementing player actions as rotations of the shape and its movement
 package Core;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 
 public class Game{
     private final GameBoard gameBoard;
@@ -13,24 +14,31 @@ public class Game{
     private int currentShapeCol;
     private int score;
     private GameState state = GameState.PLAYING;
+    private final List<Shape> shapeQueue;
+    private int shapeQueueIndex;
 
     //In constructor, we create main playing board, first shape with information about it, and it adds first shape to the playing board
     public Game(){
-        this.gameBoard = new GameBoard(10, 20);
-        this.currentShape = generateRandomShape();
+        this.gameBoard = new GameBoard(18, 10);
         this.score = 0;
-        this.currentShapeCol = 1;
+        this.shapeQueue = new ArrayList<>();
+        generateShapeQueue();
+        this.shapeQueueIndex = 0;
+        this.currentShape = shapeQueue.get(shapeQueueIndex);
+        this.currentShapeCol = gameBoard.getColCount()/2 - currentShape.width/2;
         this.currentShapeRow = 0;
         gameBoard.addShapeToBoard(currentShape,currentShapeRow,currentShapeCol);
     }
-
 
     //main GameTick(What happens between players actions)
     //it adds new shape everytime the current shape reaches bottom
     public void gameTick(){
         if (Objects.requireNonNull(currentShape.getState()) == ShapeState.AT_BOTTOM) {
+            //updating score based on number of rows deleted
+            //updating only whe player finishes its actions with current shape\
             this.score += 100 * gameBoard.updateBoard();
-            if(!generateNextShapeToTheGame()){
+            //setting GameState
+            if(!addNextShapeToTheGame()){
                 setState(GameState.FAILED);
             }else if(score > 100000){
                 setState(GameState.WON);
@@ -39,7 +47,7 @@ public class Game{
     }
 
     //Generating new random shape
-    public Shape generateRandomShape() {
+    private Shape generateRandomShape() {
         int random = new Random().nextInt(7);
         return switch (random) {
             case 0 -> new OShape();
@@ -52,19 +60,31 @@ public class Game{
             default -> null;
         };
     }
-
-    //If new shape can be placed on first row than place it
-    //Else set Core.GameState to Failed
-    public boolean generateNextShapeToTheGame(){
-        currentShape = generateRandomShape();
-        for (int col = 0; col < gameBoard.getColCount(); col++) {
-            if (gameBoard.canPlaceShapeOnBoard(currentShape, 0, col)) {
-                gameBoard.addShapeToBoard(currentShape, 0, col);
-                currentShapeRow = 0;
-                currentShapeCol = col;
-                return true;
-            }
+    //generating ShapeQueue
+    private void generateShapeQueue() {
+        for (int i = 0; i < 7; i++) {
+            Shape shape = generateRandomShape();
+            shapeQueue.add(shape);
         }
+    }
+    //Updating currentShape with new shape from the queue
+    //Everytime we came to the end of queue we shuffle the current list and start from start
+    //This way everytime we get random shape next, and we can print queue in UI
+    private boolean addNextShapeToTheGame(){
+        shapeQueueIndex++;
+        if(shapeQueueIndex > 6){
+            Collections.shuffle(shapeQueue);
+            shapeQueueIndex = 0;
+        }
+        currentShape = shapeQueue.get(shapeQueueIndex);
+        //everytime new shape is set on the top row in the middle row of the board
+        currentShapeCol = gameBoard.getColCount()/2 - currentShape.width/2;
+        currentShapeRow = 0;
+        if(gameBoard.canPlaceShapeOnBoard(currentShape, currentShapeRow, currentShapeCol)){
+            gameBoard.addShapeToBoard(currentShape, currentShapeRow, currentShapeCol);
+            return true;
+        }
+        setState(GameState.FAILED);
         return false;
     }
 
@@ -72,21 +92,20 @@ public class Game{
     public GameState getState() {
         return state;
     }
-
     public void setState(GameState state) {
         this.state = state;
     }
-
     public Shape getCurrentShape(){
         return currentShape;
     }
-
     public GameBoard getPlayingBoard(){
         return gameBoard;
     }
     public int getScore(){
         return score;
     }
+    public List<Shape> getShapeQueue(){ return shapeQueue; }
+    public int getShapeQueueIndex(){ return shapeQueueIndex; }
 
 
     //checking collision methods for movement
@@ -123,6 +142,7 @@ public class Game{
             currentShapeRow++;
             gameBoard.addShapeToBoard(currentShape, currentShapeRow, currentShapeCol);
         }else{
+            //Once Shape state changes to AT_BOTTOM this shape is no longer accessible and is replaced by new one
             currentShape.setState(ShapeState.AT_BOTTOM);
         }
     }
@@ -147,7 +167,7 @@ public class Game{
         }
     }
 
-    //rotation actions
+    //rotation actions true = rotateRight false = rotateLeft;
     public void rotateCurrentShape(boolean orientation) {
         //delete current shape from the board
         gameBoard.deleteShapeFromTheBoard(currentShape, currentShapeRow, currentShapeCol);
@@ -174,14 +194,14 @@ public class Game{
             }
         }
 
-        //try to place rotated shape if not possible than place original shape on board
+        //try to place rotated shape if not possible than moveDownCurrentShape
         rotatedShape.setBlock(newBlock);
         if(gameBoard.canPlaceShapeOnBoard(rotatedShape, currentShapeRow, currentShapeCol)) {
             currentShape = rotatedShape;
             gameBoard.addShapeToBoard(currentShape, currentShapeRow, currentShapeCol);
         }else{
             gameBoard.addShapeToBoard(currentShape, currentShapeRow, currentShapeCol);
+            moveCurrentShapeDown();
         }
     }
-
 }
