@@ -3,9 +3,7 @@
 
 
 Po každom ťahu v hre Tetris sa kontroluje, či je hra prehratá alebo vyhratá:
-    Hra je vyhratá, ak hráč dosiahne určený cieľový počet bodov, čo môže byť napríklad skóre vyššie ako 10 000 bodov. Toto kritérium je implementované v metóde gameTick, kde sa kontroluje skóre hráča. Ak hráč dosiahne alebo prekročí určený počet bodov, hra je označená ako vyhratá (GameState.WON).
-
-    Na druhej strane, hra je prehratá, ak sa hrací tvar dostane až na spodok hracej plochy a už nie je možné pridať ďalší tvar, pretože by zablokoval hraciu plochu. Toto je zistené v metóde gameTick, kde sa kontroluje, či aktuálny tvar dosiahol spodnú časť hracej plochy a ďalší tvar už nie je možné pridať. Ak sa tak stane, hra je označená ako prehratá (GameState.FAILED).
+    Hra je vyhratá, ak hráč dosiahne určený cieľový počet bodov, čo môže byť napríklad skóre vyššie ako 10 000 bodov. Toto kritérium je implementované v metóde gameTick, kde sa kontroluje skóre hráča. Ak hráč dosiahne alebo prekročí určený počet bodov, hra je označená ako vyhratá (GameState.WON).Na druhej strane, hra je prehratá, ak sa hrací tvar dostane až na spodok hracej plochy a už nie je možné pridať ďalší tvar, pretože by zablokoval hraciu plochu. Toto je zistené v metóde gameTick, kde sa kontroluje, či aktuálny tvar dosiahol spodnú časť hracej plochy a ďalší tvar už nie je možné pridať. Ak sa tak stane, hra je označená ako prehratá (GameState.FAILED).
 
 **Stavy tvarov:**
 **Padajúci (FALLING)**: Tvar je aktívny a padá na hraciu plochu. Počas tohto stavu hráč môže ovplyvniť pohyb a rotáciu tvaru, aby ho umiestnil do požadovanej pozície.
