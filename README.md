@@ -60,3 +60,6 @@ Po každom ťahu v hre Tetris sa kontroluje, či je hra prehratá alebo vyhratá
 **Zobraziť priemerné hodnotenie (7)**: Zobrazí priemerné hodnotenie hry na základe hodnotení všetkých hráčov.
 
 **Ukončiť (8)**: Ukončí aplikáciu a zavrie konzolové rozhranie.
+
+
+video: https://www.youtube.com/watch?v=Hwz5EE28rGE
