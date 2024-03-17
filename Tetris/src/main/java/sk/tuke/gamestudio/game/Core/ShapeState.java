@@ -1,8 +1,8 @@
-package Core;
+package main.java.sk.tuke.gamestudio.game.Core;
+
 
 public enum ShapeState {
     NOT_INITIALIZED,
-    INITIALIZED,
     FALLING,
     AT_BOTTOM
 }
