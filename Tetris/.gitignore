@@ -1,5 +1,6 @@
 ### IntelliJ IDEA ###
 out/
+target/
 .idea/
 !**/src/main/**/out/
 !**/src/test/**/out/
@@ -29,3 +30,5 @@ bin/
 ### Mac OS ###
 .DS_Store
 /.idea/
+
+Tetris.iml
