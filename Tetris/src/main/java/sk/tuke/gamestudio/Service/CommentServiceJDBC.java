@@ -1,6 +1,6 @@
-package main.java.sk.tuke.gamestudio.Service;
+package sk.tuke.gamestudio.Service;
 
-import main.java.sk.tuke.gamestudio.Entity.Comment;
+import sk.tuke.gamestudio.Entity.Comment;
 import java.sql.*;
 import java.sql.Date;
 import java.util.ArrayList;

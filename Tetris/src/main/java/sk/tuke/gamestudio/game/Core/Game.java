@@ -4,15 +4,25 @@
 //Keeping track and updating score
 //Generating Shape queue
 //Implementing player actions as rotations of the shape and its movement
-package main.java.sk.tuke.gamestudio.game.Core;
+package sk.tuke.gamestudio.game.Core;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public class Game {
     private final GameBoard gameBoard;
+    @Getter
     private Shape currentShape;
+    @Getter
     private int currentShapeRow;
+    @Getter
     private int currentShapeCol;
+    @Setter
+    @Getter
     private int score;
+    @Getter
     private GameState state;
+    @Getter
     private final ShapeQueue shapeQueue;
 
     //In constructor, we create main playing board, first shape with information about it, and it adds first shape to the playing board
@@ -79,36 +89,8 @@ public class Game {
 
     //getter and setter methods for variables
 
-    public GameState getState() {
-        return state;
-    }
-
     public GameBoard getPlayingBoard() {
         return gameBoard;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
-    public ShapeQueue getShapeQueue() {
-        return shapeQueue;
-    }
-
-    public int getCurrentShapeRow() {
-        return currentShapeRow;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
-    public int getCurrentShapeCol() {
-        return currentShapeCol;
-    }
-
-    public Shape getCurrentShape() {
-        return currentShape;
     }
 
     //check if current shape can be moved down
@@ -148,24 +130,17 @@ public class Game {
         }
     }
 
-    public void moveCurrentShapeRight() {
-        //check if we can move if not we move shape down instead of right
-        if (canMoveRight()) {
-            gameBoard.deleteShapeFromTheBoard(currentShape, currentShapeRow, currentShapeCol);
-            currentShapeCol++;
-            gameBoard.addShapeToBoard(currentShape, currentShapeRow, currentShapeCol);
-        } else {
-            moveCurrentShapeDown();
-        }
-    }
+    public void moveCurrentShape(boolean moveRight) {
+        // Determine the direction of the movement
+        int direction = moveRight ? 1 : -1;
 
-    public void moveCurrentShapeLeft() {
-        //check if we can move if not we move shape down instead of left
-        if (canMoveLeft()) {
+        // Attempt to move in the desired direction
+        if ((moveRight && canMoveRight()) || (!moveRight && canMoveLeft())) {
             gameBoard.deleteShapeFromTheBoard(currentShape, currentShapeRow, currentShapeCol);
-            currentShapeCol--;
+            currentShapeCol += direction; // Move right if direction is 1, left if -1
             gameBoard.addShapeToBoard(currentShape, currentShapeRow, currentShapeCol);
         } else {
+            // If movement in the desired direction is not possible, move the shape down
             moveCurrentShapeDown();
         }
     }

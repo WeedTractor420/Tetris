@@ -1,59 +1,51 @@
-package main.java.sk.tuke.gamestudio.Entity;
+package sk.tuke.gamestudio.Entity;
 
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
 
+@Entity // Marks this class as a JPA entity
 public class Comment {
-    private String comment;
-    private String game;
+
+    @Id // Marks this field as the primary key of the entity
+    @GeneratedValue// Specifies the primary key generation strategy
+    private long ident;
+
+    @Setter @Getter
     private String player;
+
+    @Setter @Getter
+    private String game;
+
+    @Setter @Getter
+    private String comment;
+
+    @Setter @Getter
     private Date commentedOn;
 
-    public Comment(String game, String player, String comment, Date commentedOn){
-        this.game = game;
+    public Comment() {
+        // No-argument constructor required by JPA
+    }
+
+    public Comment(String player, String game, String comment, Date commentedOn) {
         this.player = player;
+        this.game = game;
         this.comment = comment;
         this.commentedOn = commentedOn;
-    }
-
-    public Date getCommentedOn() {
-        return commentedOn;
-    }
-
-    public void setCommentedOn(Date commentedOn) {
-        this.commentedOn = commentedOn;
-    }
-
-    public String getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(String player) {
-        this.player = player;
-    }
-
-    public String getGame() {
-        return game;
-    }
-
-    public void setGame(String game) {
-        this.game = game;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
     @Override
     public String toString() {
-        return "Score{" +
-                "game='" + game + '\'' +
+        return "Comment{" +
+                "ident=" + ident +
                 ", player='" + player + '\'' +
-                ", comment=" + comment +
+                ", game='" + game + '\'' +
+                ", comment='" + comment + '\'' +
                 ", commentedOn=" + commentedOn +
                 '}';
     }

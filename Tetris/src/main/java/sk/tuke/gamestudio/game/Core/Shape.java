@@ -1,6 +1,6 @@
 //Abstract class representing specific shapes
 //Shape also has attributes as width, height and ShapeState(Representing current state in the game)
-package main.java.sk.tuke.gamestudio.game.Core;
+package sk.tuke.gamestudio.game.Core;
 
 public abstract class Shape {
     protected int width;

@@ -1,9 +1,9 @@
-package main.java.sk.tuke.gamestudio;
+package sk.tuke.gamestudio;
 
-import main.java.sk.tuke.gamestudio.Service.*;
-import main.java.sk.tuke.gamestudio.game.ConsoleUI.ConsoleUI;
-import main.java.sk.tuke.gamestudio.game.Core.Game;
-import main.java.sk.tuke.gamestudio.game.Core.GameBoard;
+import sk.tuke.gamestudio.Service.*;
+import sk.tuke.gamestudio.game.ConsoleUI.ConsoleUI;
+import sk.tuke.gamestudio.game.Core.Game;
+import sk.tuke.gamestudio.game.Core.GameBoard;
 
 public class Main {
     public static void main(String[] args){

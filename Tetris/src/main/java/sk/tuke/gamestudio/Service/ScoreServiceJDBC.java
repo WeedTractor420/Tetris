@@ -1,7 +1,9 @@
-package main.java.sk.tuke.gamestudio.Service;
+package sk.tuke.gamestudio.Service;
 
-import main.java.sk.tuke.gamestudio.Entity.Score;
+import org.springframework.beans.factory.annotation.Autowired;
+import sk.tuke.gamestudio.Entity.Score;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +17,6 @@ public class ScoreServiceJDBC implements ScoreService {
     public static final String DELETE = "DELETE FROM score";
     public static final String INSERT = "INSERT INTO score (game, player, points, playedOn) VALUES (?, ?, ?, ?)";
     public static final String SELECT_PLAYER = "SELECT game, player, points, playedOn FROM score WHERE game = ? AND player = ?";
-
 
     @Override
     public void addScore(Score score) throws ScoreException {

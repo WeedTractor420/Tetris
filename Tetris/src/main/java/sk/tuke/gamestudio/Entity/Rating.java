@@ -1,59 +1,51 @@
-package main.java.sk.tuke.gamestudio.Entity;
+package sk.tuke.gamestudio.Entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
 
+@Entity // This annotation marks the class as a JPA entity
 public class Rating {
+
+    @Id // Marks this field as the primary key
+    @GeneratedValue// Configures the way ID is generated
+    private long ident;
+
+    @Setter @Getter
     private String player;
+
+    @Setter @Getter
     private String game;
+
+    @Setter @Getter
     private int rating;
+
+    @Setter @Getter
     private Date ratedOn;
 
-    public Rating(String player, String game, int rating, Date RatedOn) {
-        this.game = game;
+    public Rating() {
+    }
+
+    public Rating(String player, String game, int rating, Date ratedOn) {
         this.player = player;
-        this.rating = rating;
-        this.ratedOn = RatedOn;
-    }
-
-    public String getGame() {
-        return game;
-    }
-
-    public void setGame(String game) {
         this.game = game;
-    }
-
-    public String getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(String player) {
-        this.player = player;
-    }
-
-    public int getRating() {
-        return rating;
-    }
-
-    public void setRating(int rating) {
         this.rating = rating;
-    }
-
-    public Date getRatedOn() {
-        return ratedOn;
-    }
-
-    public void setRatedOn (Date RatedOn) {
-        this.ratedOn = RatedOn;
+        this.ratedOn = ratedOn;
     }
 
     @Override
     public String toString() {
-        return "Score{" +
-                "game='" + game + '\'' +
+        return "Rating{" +
+                "ident=" + ident +
                 ", player='" + player + '\'' +
-                ", points=" + rating +
-                ", playedOn=" + ratedOn +
+                ", game='" + game + '\'' +
+                ", rating=" + rating +
+                ", ratedOn=" + ratedOn +
                 '}';
     }
 }

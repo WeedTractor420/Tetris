@@ -1,4 +1,4 @@
-package main.java.sk.tuke.gamestudio.Service;
+package sk.tuke.gamestudio.Service;
 
 public class  ScoreException extends RuntimeException {
     public ScoreException(String message) {

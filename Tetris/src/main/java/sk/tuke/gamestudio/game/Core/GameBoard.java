@@ -1,4 +1,4 @@
-package main.java.sk.tuke.gamestudio.game.Core;
+package sk.tuke.gamestudio.game.Core;
 
 //Class represents playing board and actions with board (adding and deleting Shapes)
 public class GameBoard {

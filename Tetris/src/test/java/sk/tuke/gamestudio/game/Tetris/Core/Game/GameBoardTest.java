@@ -1,7 +1,7 @@
-package test.java.sk.tuke.gamestudio.game.Tetris.Core.Game;
+package sk.tuke.gamestudio.game.Tetris.Core.Game;
 
-import main.java.sk.tuke.gamestudio.game.Core.GameBoard;
-import main.java.sk.tuke.gamestudio.game.Core.OShape;
+import sk.tuke.gamestudio.game.Core.GameBoard;
+import sk.tuke.gamestudio.game.Core.OShape;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 

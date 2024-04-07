@@ -1,9 +1,11 @@
-package test.java.sk.tuke.gamestudio.service;
+package sk.tuke.gamestudio.service;
 
-import main.java.sk.tuke.gamestudio.Entity.Rating;
-import main.java.sk.tuke.gamestudio.Service.RatingException;
-import main.java.sk.tuke.gamestudio.Service.RatingService;
-import main.java.sk.tuke.gamestudio.Service.RatingServiceJDBC;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import sk.tuke.gamestudio.Entity.Rating;
+import sk.tuke.gamestudio.Service.RatingException;
+import sk.tuke.gamestudio.Service.RatingService;
+import sk.tuke.gamestudio.Service.RatingServiceJDBC;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,14 +13,11 @@ import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class RatingServiceTest {
 
+    @Autowired
     private RatingService ratingService;
-
-    @BeforeEach
-    void setUp() {
-        ratingService = new RatingServiceJDBC();
-    }
 
     @AfterEach
     void tearDown() {

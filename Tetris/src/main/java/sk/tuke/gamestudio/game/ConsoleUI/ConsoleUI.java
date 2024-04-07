@@ -1,16 +1,17 @@
 //Class handles UI and handles input from user
-package main.java.sk.tuke.gamestudio.game.ConsoleUI;
+package sk.tuke.gamestudio.game.ConsoleUI;
 
-import main.java.sk.tuke.gamestudio.Entity.Comment;
-import main.java.sk.tuke.gamestudio.Entity.Rating;
-import main.java.sk.tuke.gamestudio.Entity.Score;
-import main.java.sk.tuke.gamestudio.Service.CommentService;
-import main.java.sk.tuke.gamestudio.Service.RatingException;
-import main.java.sk.tuke.gamestudio.Service.RatingService;
-import main.java.sk.tuke.gamestudio.Service.ScoreService;
-import main.java.sk.tuke.gamestudio.game.Core.Game;
-import main.java.sk.tuke.gamestudio.game.Core.GameState;
-import main.java.sk.tuke.gamestudio.game.Core.Shape;
+import org.springframework.beans.factory.annotation.Autowired;
+import sk.tuke.gamestudio.Entity.Comment;
+import sk.tuke.gamestudio.Entity.Rating;
+import sk.tuke.gamestudio.Entity.Score;
+import sk.tuke.gamestudio.Service.CommentService;
+import sk.tuke.gamestudio.Service.RatingException;
+import sk.tuke.gamestudio.Service.RatingService;
+import sk.tuke.gamestudio.Service.ScoreService;
+import sk.tuke.gamestudio.game.Core.Game;
+import sk.tuke.gamestudio.game.Core.GameState;
+import sk.tuke.gamestudio.game.Core.Shape;
 
 import java.util.Date;
 import java.util.InputMismatchException;
@@ -33,10 +34,12 @@ public class ConsoleUI {
         this.userName = null;
     }
 
-    public void setScoreService(ScoreService scoreService) {
-        this.scoreService = scoreService;
-    }
+    @Autowired
+    public void setScoreService(ScoreService scoreService) {this.scoreService = scoreService;}
+    @Autowired
     public void setRatingService(RatingService ratingService) { this.ratingService = ratingService; }
+
+    @Autowired
     public void setCommentService(CommentService commentService){ this.commentService = commentService;}
 
     public void start() {
@@ -167,10 +170,10 @@ public class ConsoleUI {
                 game.moveCurrentShapeDown();
                 break;
             case "A":
-                game.moveCurrentShapeLeft();
+                game.moveCurrentShape(false);
                 break;
             case "D":
-                game.moveCurrentShapeRight();
+                game.moveCurrentShape(true);
                 break;
             case "R":
                 game.rotateCurrentShape(true);
@@ -179,6 +182,7 @@ public class ConsoleUI {
                 game.rotateCurrentShape(false);
                 break;
             case "M":
+                saveScore(userName);
                 start();
             default:
                 break;
@@ -250,7 +254,7 @@ public class ConsoleUI {
 
     private void saveScore(String player) {
         scoreService.addScore(
-                new Score("Tetris", player, game.getScore(), new Date()));
+                new Score(player, "Tetris", game.getScore(), new Date()));
     }
 
     public void saveRating(String player) {
@@ -315,7 +319,7 @@ public class ConsoleUI {
             System.out.print("Enter your comment: ");
             String commentText = scanner.nextLine();
             try {
-                Comment comment = new Comment("Tetris", player, commentText, new Date());
+                Comment comment = new Comment(player, "Tetris", commentText, new Date());
                 commentService.addComment(comment);
                 System.out.println("Comment added successfully.");
                 System.out.println("---------------------------------------");

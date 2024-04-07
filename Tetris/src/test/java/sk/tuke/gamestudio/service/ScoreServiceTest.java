@@ -1,117 +1,65 @@
-package test.java.sk.tuke.gamestudio.service;
+package sk.tuke.gamestudio.service;
 
-import main.java.sk.tuke.gamestudio.Entity.Score;
-import main.java.sk.tuke.gamestudio.Service.ScoreException;
-import main.java.sk.tuke.gamestudio.Service.ScoreServiceJDBC;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import sk.tuke.gamestudio.Entity.Score;
+import sk.tuke.gamestudio.Service.ScoreService;
+
 import java.util.Date;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest
 public class ScoreServiceTest {
 
-    private ScoreServiceJDBC scoreService;
+    @Autowired
+    private ScoreService scoreService;
 
-    @BeforeEach
-    void setUp() {
-        scoreService = new ScoreServiceJDBC();
-    }
+    @Test
+    public void reset() {
+        scoreService.reset();
 
-    @AfterEach
-    void tearDown() {
-        scoreService.reset(); // Reset the scores after each test
+        assertEquals(0, scoreService.getTopScores("Tetris").size());
     }
 
     @Test
-    void addScoresForDifferentGamesAndPlayers() throws ScoreException {
-        // Add scores for different games and players
-        Score score1 = new Score("Game1", "Player1", 100, new Date());
-        Score score2 = new Score("Game2", "Player2", 200, new Date());
-        Score score3 = new Score("Game3", "Player3", 300, new Date());
+    public void addScore() {
+        scoreService.reset();
+        var date = new Date();
 
-        scoreService.addScore(score1);
-        scoreService.addScore(score2);
-        scoreService.addScore(score3);
+        scoreService.addScore(new Score("Jaro", "Tetris", 100, date));
 
-        // Check if scores were added correctly
-        List<Score> topScores1 = scoreService.getTopScores("Game1");
-        List<Score> topScores2 = scoreService.getTopScores("Game2");
-        List<Score> topScores3 = scoreService.getTopScores("Game3");
-
-        assertEquals(1, topScores1.size());
-        assertEquals(1, topScores2.size());
-        assertEquals(1, topScores3.size());
+        var scores = scoreService.getTopScores("Tetris");
+        assertEquals(1, scores.size());
+        assertEquals("Tetris", scores.get(0).getGame());
+        assertEquals("Jaro", scores.get(0).getPlayer());
+        assertEquals(100, scores.get(0).getPoints());
     }
 
     @Test
-    void addScoresWithSameScoreValueForDifferentPlayersInSameGame() throws ScoreException {
-        // Add scores with the same score value for different players in the same game
-        Score score1 = new Score("Game1", "Player1", 120, new Date());
-        Score score2 = new Score("Game1", "Player2", 100, new Date());
+    public void getTopScores() {
+        scoreService.reset();
+        var date = new Date();
+        scoreService.addScore(new Score("Jaro", "Tetris", 120, date));
+        scoreService.addScore(new Score("Katka", "Tetris", 150, date));
+        scoreService.addScore(new Score("Jaro", "Tetris",100, date));
 
-        scoreService.addScore(score1);
-        scoreService.addScore(score2);
+        var scores = scoreService.getTopScores("Tetris");
 
-        // Check if scores were added correctly
-        List<Score> topScores = scoreService.getTopScores("Game1");
+        assertEquals(3, scores.size());
 
-        assertEquals(2, topScores.size());
-        assertEquals(score1.getPoints(), topScores.get(0).getPoints());
-        assertEquals(score1.getGame(), topScores.get(0).getGame());
+        assertEquals("Tetris", scores.get(0).getGame());
+        assertEquals("Katka", scores.get(0).getPlayer());
+        assertEquals(150, scores.get(0).getPoints());
 
-        assertEquals(score2.getPoints(), topScores.get(1).getPoints());
-        assertEquals(score2.getGame(), topScores.get(1).getGame());
+        assertEquals("Tetris", scores.get(1).getGame());
+        assertEquals("Jaro", scores.get(1).getPlayer());
+        assertEquals(120, scores.get(1).getPoints());
+
+        assertEquals("Tetris", scores.get(2).getGame());
+        assertEquals("Jaro", scores.get(2).getPlayer());
+        assertEquals(100, scores.get(2).getPoints());
     }
-
-    @Test
-    void addScoresWithSameScoreValueAndPlayerInDifferentGames() throws ScoreException {
-        // Add scores with the same score value and player in different games
-        Score score1 = new Score("Game1", "Player1", 100, new Date());
-        Score score2 = new Score("Game2", "Player1", 100, new Date());
-
-        scoreService.addScore(score1);
-        scoreService.addScore(score2);
-
-        // Check if scores were added correctly
-        List<Score> topScores1 = scoreService.getTopScores("Game1");
-        List<Score> topScores2 = scoreService.getTopScores("Game2");
-
-        assertEquals(1, topScores1.size());
-        assertEquals(1, topScores2.size());
-
-        assertEquals(score1.getPoints(), topScores1.get(0).getPoints());
-        assertEquals(score1.getGame(), topScores1.get(0).getGame());
-
-        assertEquals(score2.getPoints(), topScores2.get(0).getPoints());
-        assertEquals(score2.getGame(), topScores2.get(0).getGame());
-    }
-
-    @Test
-    void getTopScores() throws ScoreException {
-        // Add scores for different games and players
-        Score score1 = new Score("Game1", "Player1", 120, new Date());
-        Score score2 = new Score("Game1", "Player2", 100, new Date());
-        Score score3 = new Score("Game1", "Player3", 150, new Date());
-        Score score4 = new Score("Game1", "Player4", 130, new Date());
-        Score score5 = new Score("Game1", "Player5", 200, new Date());
-
-        scoreService.addScore(score1);
-        scoreService.addScore(score2);
-        scoreService.addScore(score3);
-        scoreService.addScore(score4);
-        scoreService.addScore(score5);
-
-        // Check if top scores were retrieved correctly
-        List<Score> topScores = scoreService.getTopScores("Game1");
-
-        assertEquals(5, topScores.size());
-        assertEquals(score5.getPoints(), topScores.get(0).getPoints());
-        assertEquals(score3.getPoints(), topScores.get(1).getPoints());
-        assertEquals(score4.getPoints(), topScores.get(2).getPoints());
-        assertEquals(score1.getPoints(), topScores.get(3).getPoints());
-        assertEquals(score2.getPoints(), topScores.get(4).getPoints());
-    }
-
-
 }
+

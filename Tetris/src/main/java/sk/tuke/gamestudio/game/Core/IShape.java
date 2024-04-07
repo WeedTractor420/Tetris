@@ -1,4 +1,4 @@
-package main.java.sk.tuke.gamestudio.game.Core;
+package sk.tuke.gamestudio.game.Core;
 
 
 public class IShape extends Shape {

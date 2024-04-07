@@ -1,4 +1,4 @@
-package main.java.sk.tuke.gamestudio.game.Core;
+package sk.tuke.gamestudio.game.Core;
 
 import java.util.ArrayList;
 import java.util.List;

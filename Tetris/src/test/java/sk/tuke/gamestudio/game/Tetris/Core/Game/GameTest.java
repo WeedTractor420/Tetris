@@ -1,8 +1,8 @@
-package test.java.sk.tuke.gamestudio.game.Tetris.Core.Game;
+package sk.tuke.gamestudio.game.Tetris.Core.Game;
 
 import static org.junit.Assert.*;
 
-import main.java.sk.tuke.gamestudio.game.Core.*;
+import sk.tuke.gamestudio.game.Core.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -57,14 +57,14 @@ public class GameTest {
     @Test
     public void testMoveCurrentShapeRight() {
         int initialCol = game.getCurrentShapeCol();
-        game.moveCurrentShapeRight();
+        game.moveCurrentShape(true);
         assertEquals(initialCol + 1, game.getCurrentShapeCol());
     }
 
     @Test
     public void testMoveCurrentShapeLeft() {
         int initialCol = game.getCurrentShapeCol();
-        game.moveCurrentShapeLeft();
+        game.moveCurrentShape(false);
         assertEquals(initialCol - 1, game.getCurrentShapeCol());
     }
 
