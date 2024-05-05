@@ -62,4 +62,5 @@ Po každom ťahu v hre Tetris sa kontroluje, či je hra prehratá alebo vyhratá
 **Ukončiť (8)**: Ukončí aplikáciu a zavrie konzolové rozhranie.
 
 
-video: https://www.youtube.com/watch?v=Hwz5EE28rGE
+video odovzdavka-1: https://www.youtube.com/watch?v=Hwz5EE28rGE
+video odovzdavka-2: https://www.youtube.com/watch?v=jS7M1WYr9CE
