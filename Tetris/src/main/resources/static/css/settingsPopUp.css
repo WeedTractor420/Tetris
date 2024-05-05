@@ -1,0 +1,79 @@
+.settings {
+    position: absolute;
+    border: none;
+    padding: 15px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 38px;
+    cursor: pointer;
+    background-color: transparent;
+    bottom: 0;
+    left: 45px;
+    color: white;
+    border: transparent;
+    outline: none;
+}
+
+#audioInput{
+    display: flex;
+    position: absolute;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Styles for the settings popup */
+.settings-popup {
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+    width: 300px;
+    height: 500px;
+    color: white;
+    padding: 20px;
+    background-color: #000;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    z-index: 1000;
+    display: none;
+}
+
+/* Styles for each settings item */
+.settings-item {
+    margin-bottom: 15px;
+}
+
+.settings-item:last-child {
+    margin-bottom: 0;
+}
+
+.settings-item a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.settings-item a:hover, .settings-item a:focus {
+    color: #aaa;
+    text-decoration: none;
+}
+
+/* Label styling for audio settings */
+.settings-item label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Style for the volume control slider */
+#volumeControl {
+    width: 100%;
+    cursor: pointer;
+}
+
+/* Style for the volume label */
+#volumeLabel {
+    display: inline-block;
+    margin-left: 10px;
+}

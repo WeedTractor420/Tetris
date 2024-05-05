@@ -3,6 +3,8 @@ package sk.tuke.gamestudio.Service;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
 import sk.tuke.gamestudio.Entity.Rating;
+import java.util.Arrays;
+import java.util.List;
 
 public class RatingServiceRestClient implements RatingService {
 
@@ -29,5 +31,11 @@ public class RatingServiceRestClient implements RatingService {
     @Override
     public void reset() {
         throw new UnsupportedOperationException("Not supported via web service");
+    }
+
+    @Override
+    public List<Rating> getAllRatingsForGame(String game) {
+        Rating[] ratings = restTemplate.getForObject(url + "/ratings/" + game, Rating[].class);
+        return Arrays.asList(ratings);
     }
 }

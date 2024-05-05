@@ -43,7 +43,7 @@ public class SpringClient {
         return new ConsoleUI(game);
     }
 
-    @Bean
+   @Bean
     public ScoreService scoreService() {
         return new ScoreServiceRestClient();
     }
@@ -56,6 +56,11 @@ public class SpringClient {
     @Bean
     public CommentService commentService() {
         return new CommentServiceRestClient();
+    }
+
+    @Bean
+    public UserService userService() {
+        return new UserServiceRestClient();
     }
 
     /*@Bean

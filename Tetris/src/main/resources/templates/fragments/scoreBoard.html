@@ -1,0 +1,8 @@
+<div th:fragment="topScoresList">
+    <ol>
+        <li th:each="score : ${topScores}">
+            <span class="score-label" th:text="${score.player}">Player Name</span>
+            <span class="score-number" th:text="${score.points}">Score</span>
+        </li>
+    </ol>
+</div>

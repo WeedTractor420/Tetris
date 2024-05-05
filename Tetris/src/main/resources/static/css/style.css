@@ -1,0 +1,232 @@
+body {
+    font-family: Arial, sans-serif;
+    color: white;
+    background: #111;
+    text-align: center;
+    position: relative; /* Ensure relative positioning for proper stacking context */
+    overflow: hidden; /* Hide overflow to keep everything neat */
+}
+
+#ShapeQueue {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: absolute;
+    top: 100px;
+    right: 400px;
+    width: 120px;
+    height: 240px;
+    padding: 10px;
+    border-radius: 20px; /* Rounded corners for glossy effect */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.8); /* Slightly transparent black */
+    backdrop-filter: blur(5px); /* Soft blur effect */
+    overflow: hidden; /* Hide overflow */
+    border: 4px solid white; /* Solid border for queue */
+}
+
+#ShapeQueue h2 {
+    color: #fff;
+    font-size: 16px;
+    margin: 5px 0;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.2); /* Semi-transparent for glossy header */
+    border-radius: 10px 10px 0 0; /* Round top corners of the header */
+}
+
+.shapes-tables {
+    width: 100%;
+    height: calc(100% - 40px); /* Subtract the height of the h2 element */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around; /* Distribute space between shape tables */
+    align-items: center;
+}
+
+.shape-table {
+    border-collapse: collapse;
+    margin: 5px 0; /* Space between shape tables */
+}
+
+.shape-table td {
+    width: 20px;
+    height: 20px;
+    border: none;
+}
+
+.tetris-board {
+    border-collapse: collapse;
+    margin: 0 auto; /* Centers the board horizontally */
+    border: 4px solid #444; /* Solid border around the board */
+    background-color: #000; /* Background color for the whole board */
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8); /* Shadow effect for depth */
+    z-index: 10;
+    position: relative;
+}
+
+.tetris-board td {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #333; /* Inner borders for cells */
+}
+
+/* Styles for occupied cells with a bit of a 3D effect to resemble the blocks */
+.tetris-block {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: inset 0 -1px 1px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+}
+
+/* Example style for empty tiles */
+.tetris-empty {
+    background-color: #000; /* Empty tiles as black background */
+}
+
+/* Styles for horizontal and vertical borders */
+.h-border {
+    background-image: url("images/border_image.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    box-shadow: none; /* Remove box-shadow for border blocks if desired */
+}
+
+.v-border {
+    background-image: url("images/border_image.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    box-shadow: none; /* Remove box-shadow for border blocks if desired */
+}
+
+
+/* Styles for different tiles based on their type, with gradient and box shadow for texture */
+.tile-I { background-color: #00f0f0; box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); }
+.tile-J { background-color: #0000f0; box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); }
+.tile-L { background-color: #f0a000; box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); }
+.tile-O { background-color: #f0f000; box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); }
+.tile-S { background-color: #00f000; box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); }
+.tile-T { background-color: #a000f0; box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); }
+.tile-Z { background-color: #f00000; box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); }
+
+.status-container {
+    position: absolute;
+    top: 300px; /* Adjust as needed */
+    left: 350px; /* Adjust as needed */
+    width: 200px; /* Adjust width as needed */
+    background: rgba(0, 0, 0, 0.8); /* Slightly transparent black */
+    border-radius: 20px; /* Rounded corners for glossy effect */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    text-align: center;
+    border: 4px solid white;
+    z-index: 10;
+}
+
+.status-container h2 {
+    color: #fff;
+    margin: 10px 0;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.status-value {
+    color: #fff;
+    background: #222; /* Dark background for the values */
+    margin: 5px 0;
+    padding: 8px 0;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* General style for shadow */
+.tetris-shadow {
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8); /* More intense shadow */
+    opacity: 0.7; /* Less transparency for better visibility */
+}
+
+/* Specific styles for each shape color with increased brightness */
+.shadow-I { box-shadow: inset 0 0 20px #00f0f0; }
+.shadow-J { box-shadow: inset 0 0 20px #0000f0; }
+.shadow-L { box-shadow: inset 0 0 20px #f0a000; }
+.shadow-O { box-shadow: inset 0 0 20px #f0f000; }
+.shadow-S { box-shadow: inset 0 0 20px #00f000; }
+.shadow-T { box-shadow: inset 0 0 20px #a000f0; }
+.shadow-Z { box-shadow: inset 0 0 20px #f00000; }
+
+#HeldShape {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Center content vertically and horizontally */
+    position: absolute;
+    top: 100px; /* Adjust as needed */
+    left: 400px; /* Position differently from the Shape Queue */
+    width: 120px; /* Adjust width as needed, similar to Shape Queue */
+    height: 120px; /* Smaller height as it holds only one shape */
+    padding: 10px;
+    border-radius: 20px; /* Rounded corners for a glossy effect */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.8); /* Slightly transparent black */
+    backdrop-filter: blur(5px); /* Soft blur effect */
+    overflow: hidden; /* Hide overflow */
+    border: 4px solid white; /* Solid white border */
+}
+
+#HeldShape h2 {
+    color: #fff;
+    font-size: 16px;
+    margin-bottom: 10px; /* Adjust spacing as needed */
+    text-align: center;
+    font-weight: bold;
+    background: rgba(255, 255, 255, 0.2); /* Semi-transparent for glossy header */
+    border-radius: 10px 10px 0 0; /* Round top corners of the header */
+    width: 100%; /* Full width */
+    padding: 5px 0; /* Padding for aesthetic spacing */
+}
+
+.held-shape {
+    width: 100%; /* Full width to match the container size */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center shapes vertically in the container */
+    align-items: center;
+}
+
+.held-shape .shape-table {
+    border-collapse: collapse;
+    margin: 0; /* No margins needed since only one table */
+}
+
+.held-shape .shape-table td {
+    width: 20px; /* Standard tile size, adjust if different */
+    height: 20px;
+    border: none; /* No border for a cleaner look */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

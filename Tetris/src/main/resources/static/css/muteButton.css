@@ -1,0 +1,115 @@
+.round {
+    position: absolute;
+    border: 2px solid #fff;
+    width: 40px;
+    height: 40px;
+    border-radius: 100%;
+}
+
+.audioControlBox {
+    position: absolute;
+    width: 120px; /* Adjust the width as needed */
+    height: 80px; /* Adjust the height as needed */
+    background-color: #000;
+    border: 2px solid #fff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;
+    color: #fff;
+    z-index: 100;
+    bottom: 200px;
+    left: 985px;
+}
+
+/* ---- */
+.speaker {
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    overflow: hidden;
+    margin: 5px;
+    z-index: 100;
+}
+.speaker span {
+    display: block;
+    width: 7px;
+    height: 7px;
+    background: #fff;
+    margin: 12px 0 0 1px;
+}
+.speaker span:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent #fff transparent transparent;
+    border-width: 10px 12px 10px 15px;
+    left: -13px;
+    top: 5px;
+}
+.speaker span:before {
+    transform: rotate(45deg);
+    border-radius: 0 50px 0 0;
+    content: '';
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    border-style: double;
+    border-color: #fff;
+    border-width: 7px 7px 0 0;
+    left: 18px;
+    top: 9px;
+    transition: all 0.2s ease-out;
+}
+
+.speaker:hover span:before {transform: scale(0.8) translate(-17px, 0) rotate(42deg);}
+.speaker:hover .mute {opacity:1; transform: scale(1);}
+
+
+.speaker.on .mute {opacity:1; transform: scale(1);}
+.speaker.on span:before {transform: scale(0.8) translate(-17px, 0) rotate(42deg);}
+/*.speaker.on:hover .mute {transform: rotate(180deg); }*/
+
+.speaker.on:hover span:before {transform: scale(1) translate(0px, 0) rotate(42deg);border-color: #7f7f7f;}
+.speaker.on:hover .mute {opacity:0; transform: scale(0.3);}
+
+.mute {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    opacity: 0;
+    left: 12px;
+    top: 7px;
+    transform: scale(0.3);
+    transition: all 0.2s ease-out;
+    background-color: transparent;
+
+}
+
+.mute:before, .mute:after {
+    position: absolute;
+    margin-left: 4px;
+    content: ' ';
+    height: 15px;
+    width: 2px;
+    background-color: #7f7f7f;
+}
+.on .mute:before, .on .mute:after {
+    position: absolute;
+    margin-left: 4px;
+    content: ' ';
+    height: 15px;
+    width: 2px;
+    background-color: #ffffff;
+}
+.mute:before {
+    transform: rotate(45deg);
+}
+.mute:after {
+    transform: rotate(-45deg);
+}
+

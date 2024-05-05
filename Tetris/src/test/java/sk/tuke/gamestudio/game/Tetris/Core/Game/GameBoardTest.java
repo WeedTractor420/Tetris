@@ -97,7 +97,7 @@ public class GameBoardTest {
         gameBoard.getBoard()[1][1].setOccupied(true);
 
         // Update the board and check if a row was deleted
-        int deletedRows = gameBoard.updateBoard();
+        int deletedRows = gameBoard.updateBoard().size();
         assertEquals(2, deletedRows);
 
         // Check if the first row is now empty

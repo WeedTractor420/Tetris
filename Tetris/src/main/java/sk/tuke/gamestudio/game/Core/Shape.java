@@ -2,16 +2,27 @@
 //Shape also has attributes as width, height and ShapeState(Representing current state in the game)
 package sk.tuke.gamestudio.game.Core;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public abstract class Shape {
+    @Getter
     protected int width;
+    @Getter
     protected int height;
+    @Getter
     protected Tile[][] block;
+    @Getter
+    protected char shapeSymbol;
+    @Getter
+    @Setter
     private ShapeState state = ShapeState.NOT_INITIALIZED;
 
-    public Shape(int width, int height, Tile[][] block) {
+    public Shape(int width, int height, Tile[][] block, char shapeSymbol) {
         this.width = width;
         this.height = height;
         this.block = block;
+        this.shapeSymbol = shapeSymbol;
     }
 
     public void rotateShape(boolean clockwise) {
@@ -42,23 +53,4 @@ public abstract class Shape {
         width = newWidth;
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public Tile[][] getBlock() {
-        return block;
-    }
-
-    public ShapeState getState() {
-        return state;
-    }
-
-    public void setState(ShapeState state) {
-        this.state = state;
-    }
 }

@@ -1,0 +1,41 @@
+.container {
+    position: fixed;
+    display: flex;
+    justify-content: space-between; /* This spreads out the children */
+    align-items: flex-start;
+    padding-top: 120px;
+    z-index: 10;
+}
+
+.popup-container{
+    background-image: url("images/menu_image.png");
+    background-size: 700px 700px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    min-height: 700px;
+    min-width: 700px;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    margin-left: 420px;
+    bottom: 150px;
+}
+
+.success-message h2{
+    position: absolute;
+    font-size: 2rem;
+    color: white; /* Assuming you want the title in white */
+    text-align: center; /* Center the title if desired */
+    bottom: 350px;
+    right: 100px;
+}
+
+#back-to-menu{
+    position: absolute;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    right: 300px;
+}

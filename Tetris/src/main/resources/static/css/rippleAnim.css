@@ -1,0 +1,34 @@
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: ripple-effect 600ms linear;
+    background: rgba(255, 255, 255, 0.7);
+    width: 100px;
+    height: 100px;
+    transform-origin: center;
+}
+
+@keyframes ripple-effect {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+
+.button {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple-container {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.7);
+    transform: scale(0);
+    animation: ripple-effect 600ms linear;
+    width: 20px;
+    height: 20px;
+    transform-origin: center;
+}

@@ -1,11 +1,14 @@
 package sk.tuke.gamestudio.game.Core;
 
+import lombok.Getter;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ShapeQueue {
     private final List<Shape> shapeQueue;
+    @Getter
     private int index;
 
     public ShapeQueue() {
@@ -43,10 +46,6 @@ public class ShapeQueue {
 
     public List<Shape> getShapeQueue() {
         return new ArrayList<>(shapeQueue);
-    }
-
-    public int getIndex() {
-        return index;
     }
 
     public void reset() {

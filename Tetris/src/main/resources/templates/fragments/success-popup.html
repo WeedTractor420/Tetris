@@ -1,0 +1,11 @@
+<div th:fragment="successMessagePopup(message)">
+    <div class="popup-container">
+        <div class="success-message">
+            <h2 th:text="${message}"></h2>
+            <!-- Form to handle redirection -->
+            <form th:action="@{/tetris/menu}" method="get">
+                <button type="submit" class="button" id="back-to-menu">Back to Menu</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,10 @@
+<div class="status-container" th:fragment="gameStatusContainer">
+    <h2>SCORE</h2>
+    <div class="status-value" id="score-value">
+        <span th:text="${score}">0</span> <!-- Default text shows when `score` is not yet set -->
+    </div>
+    <h2>GAME STATE</h2>
+    <div class="status-value" id="game-state-value">
+        <span th:text="${gameState}">Not Started</span> <!-- Default text for when `gameState` is not yet set -->
+    </div>
+</div>

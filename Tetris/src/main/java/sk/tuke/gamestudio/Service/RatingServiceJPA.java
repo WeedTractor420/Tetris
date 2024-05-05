@@ -6,11 +6,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.Date;
+import java.util.List;
 
 @Transactional
 public class RatingServiceJPA implements RatingService {
     @PersistenceContext
     private EntityManager entityManager;
+
     @Override
     public void setRating(Rating rating) throws RatingException {
         Rating existingRating = entityManager.createQuery("SELECT r FROM Rating r WHERE r.game = :game AND r.player = :player", Rating.class)
@@ -50,10 +52,19 @@ public class RatingServiceJPA implements RatingService {
         return rating != null ? rating.getRating() : 0;
     }
 
+    @Override
+    public List<Rating> getAllRatingsForGame(String game) throws RatingException {
+        try {
+            return entityManager.createQuery("SELECT r FROM Rating r WHERE r.game = :game", Rating.class)
+                    .setParameter("game", game)
+                    .getResultList();
+        } catch (Exception e) {
+            throw new RatingException("Error retrieving ratings list: " + e.getMessage(), e);
+        }
+    }
 
     @Override
     public void reset() throws RatingException {
         entityManager.createQuery("DELETE FROM Rating").executeUpdate();
     }
-
 }

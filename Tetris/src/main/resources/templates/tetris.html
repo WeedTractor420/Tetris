@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gamestudio Tetris</title>
+
+    <!-- css import -->
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bgAnim.css}"/>
+    <link rel="stylesheet" th:href="@{/css/logo.css}"/>
+    <link rel="stylesheet" th:href="@{/css/button.css}"/>
+    <link rel="stylesheet" th:href="@{/css/rippleAnim.css}"/>
+    <link rel="stylesheet" th:href="@{/css/muteButton.css}"/>
+    <link rel="stylesheet" th:href="@{/css/settingsPopUp.css}"/>
+    <link rel="stylesheet" th:href="@{/css/gameOverPopUp.css}"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div th:replace="fragments/bgAnim :: bgAnimFragment"></div>
+<div th:replace="fragments/logo :: logoFragment"></div>
+
+<div th:replace="fragments/gameStatusContainer :: gameStatusContainer"></div>
+
+<h1>Tetris</h1>
+<div class="tetrisControl">
+    <div class="gameInfo">
+        <p>Game state: <span th:text="${gameState}">Playing</span></p>
+    </div>
+</div>
+
+<div id="tetrisBoard" th:utext="${boardHtml}"></div>
+<div id="ShapeQueue" th:utext="${nextShapesHtml}"></div>
+<div id="HeldShape" th:utext="${heldShapeHtml}"></div>
+
+<audio id="gameMusic" loop>
+    <source src="/audio/GameMusic.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="gameOverSound">
+    <source src="/audio/GameOver.mp3" type="audio/mpeg">
+</audio>
+
+<div th:replace="fragments/audioControButton :: audioControlButton"></div>
+
+<div th:replace="fragments/gameOverPopUp :: gameOverPopUp"></div>
+
+<div th:replace="fragments/settingsPopUp :: settingsPopUp"></div>
+
+<!-- jss import -->
+<script th:src="@{/js/bgAnim.js}"></script>
+<script th:src="@{/js/rippleAnim.js}"></script>
+
+<script th:inline="javascript">
+    let moveDownTimeout;
+    let playing = true;
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const audioElementGame = document.getElementById('gameMusic'); // Reference to the audio element
+        const audioElementEnd = document.getElementById('gameOverSound')
+        const settingsButton = document.querySelector('.settings');
+        const settingsPopup = document.getElementById('settingsPopup');
+        const speakerElements = document.querySelectorAll('.speaker'); // Get all speaker elements
+        audioElementGame.play();
+        audioElementGame.muted = false;
+
+        speakerElements.forEach(speakerElement => {
+            speakerElement.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                this.classList.toggle('on'); // Toggle the 'on' class for visual changes
+
+                // Determine whether the audio should be muted or not
+                audioElementGame.muted = this.classList.contains('on');
+                audioElementEnd.muted = this.classList.contains('on');
+            });
+        });
+
+        settingsButton.addEventListener('click', function() {
+            // Toggle the display of the settings popup
+            if (settingsPopup.style.display === 'none') {
+                settingsPopup.style.display = 'block';
+                playing = false; // Pause the game
+                pauseGame(); // Additional logic to handle game pausing
+            } else {
+                settingsPopup.style.display = 'none';
+                playing = true; // Resume the game
+                resumeGame(); // Additional logic to handle game resuming
+            }
+        });
+
+
+        document.getElementById('volumeControl').addEventListener('input', function(e) {
+            adjustVolume(e.target.value);
+        });
+
+
+        resetMoveDownTimer();
+        document.addEventListener('keypress', function (e) {
+                // Determine the action based on the keypress
+            let action = determineAction(e.key);
+
+            if (action && playing) {
+                e.preventDefault(); // Prevent the default action (e.g., scrolling the page)
+                move(action)
+            }
+        });
+
+    });
+
+    function pauseGame() {
+        // Stop all timers or intervals
+        clearTimeout(moveDownTimeout);
+        // You can also pause any animations or dynamic game elements here
+    }
+
+    function resumeGame() {
+        // Restart timers or intervals
+        resetMoveDownTimer();
+        // Resume any paused animations or dynamic game elements here
+    }
+
+    function adjustVolume(value) {
+        const volumeLabel = document.getElementById('volumeLabel');
+        const audioElementGame = document.getElementById('gameMusic');
+        const audioElementEnd = document.getElementById('gameOverSound');
+        if (!audioElementGame.muted && !audioElementEnd.muted) {
+            audioElementGame.volume = value / 100;
+            audioElementEnd.volume = value / 100;
+        }
+        volumeLabel.textContent = `${value}%`;
+    }
+
+    async function move(action) {
+        try {
+            const response = await fetch(`/tetris/${action}`);
+            if (!response.ok) throw new Error('Failed to execute move');
+            await update(); // Make sure update is awaited
+        } catch (error) {
+            console.error('Fetch error:', error);
+        }
+    }
+
+
+    function update() {
+        // Fetch the current game state without initiating a move
+        Promise.all([
+            fetch('/tetris/getBoard').then(response => response.text()),
+            fetch('/tetris/getHeldShape').then(response => response.text()),
+            fetch('/tetris/getShapeQueue').then(response => response.text()),
+            fetch('/tetris/getCurrentScore').then(response => response.text()),
+            fetch('/tetris/getCurrentGameState').then(response => response.text())
+        ])
+            .then(([boardHtml, heldShapeHtml, shapeQueueHtml, score, gameState]) => {
+                // Check game state and react accordingly
+                handleGameState(gameState, parseInt(score));
+
+                // Update the DOM with the latest game state
+                document.getElementById('tetrisBoard').innerHTML = boardHtml;
+                document.getElementById('HeldShape').innerHTML = heldShapeHtml;
+                document.getElementById('ShapeQueue').innerHTML = shapeQueueHtml;
+                document.getElementById('score-value').innerText = score;
+                document.getElementById('game-state-value').innerText = gameState;
+
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+            });
+    }
+
+    function handleGameState(gameState, score) {
+        if (gameState.trim().toLowerCase() === "failed") {
+            showGameOverPopup();
+            playing = false; // Stop any game activity
+            playGameOverSound(); // Play the game over sound
+            sendScore(score);
+            clearTimeout(moveDownTimeout);
+        }else{
+            resetMoveDownTimer();
+            playing = true;
+        }
+    }
+
+    function playGameOverSound() {
+        const gameOverSound = document.getElementById('gameOverSound');
+        const gameMusic = document.getElementById('gameMusic');
+        gameMusic.pause(); // Stop the game music
+        gameMusic.currentTime = 0; // Reset the game music time if it needs to be replayed later
+        gameOverSound.play(); // Play the game over sound
+    }
+
+    function showGameOverPopup() {
+        const popup = document.getElementById('gameOverPopup');
+        if (popup.style.display === 'none') {
+            popup.style.display = 'flex'; // Show the popup
+        }
+    }
+
+    function determineAction(key) {
+        switch (key.toLowerCase()) {
+            case 'x':
+                return 'hold'; // Assign 'hold' when 'x' is pressed
+            case 'a':
+            case 'ArrowLeft':
+                return 'moveLeft';
+            case 'd':
+            case 'ArrowRight':
+                return 'moveRight';
+            case 'w':
+            case 'ArrowUp':
+                return 'rotateRight';
+            case 's':
+            case 'ArrowDown':
+                return 'moveDown';
+            case 'q':
+                return 'rotateLeft';
+            default:
+                return null; // No action for other keys
+        }
+    }
+
+
+    function resetMoveDownTimer() {
+        // Clear any existing timer
+        clearTimeout(moveDownTimeout);
+
+        // Set a new timer
+        if(playing) {
+
+            moveDownTimeout = setTimeout(() => move('moveDown'), 2000);
+        }
+    }
+
+
+
+    function sendScore(score) {
+        fetch('/tetris/submitScore', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `points=${score}`
+        })
+            .then(response => response.text())
+            .then(data => {
+                console.log('Response from server:', data);
+            })
+            .catch(error => {
+                console.error('Error submitting score:', error);
+            });
+    }
+
+</script>
+</body>
+</html>

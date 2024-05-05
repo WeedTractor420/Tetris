@@ -1,0 +1,17 @@
+<div th:fragment="settingsPopUp">
+  <div id="settingsPopup" class="settings-popup" style="display: none;">
+    <div class="settings-menu">
+      <div class="settings-item" id="menu">
+        <a th:href="@{/tetris/menu}">Menu</a>
+      </div>
+      <div class="settings-item" id="GameInfo">
+        <a th:href="@{/tetris/gameInfo}">GameInfo</a>
+      </div>
+      <div class="settings-item" id="audioInput">
+        <label for="volumeControl">Audio Settings:</label>
+        <input type="range" id="volumeControl" min="0" max="100" value="100" onchange="adjustVolume(this.value)">
+        <span id="volumeLabel">100%</span>
+      </div>
+    </div>
+  </div>
+</div>

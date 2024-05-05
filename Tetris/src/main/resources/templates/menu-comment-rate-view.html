@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Studio Tetris Ratings and Comments</title>
+    <link rel="stylesheet" th:href="@{/css/menuCommentRateStyles.css}" />
+    <link rel="stylesheet" th:href="@{/css/bgAnim.css}"/>
+    <link rel="stylesheet" th:href="@{/css/logo.css}"/>
+    <link rel="stylesheet" th:href="@{/css/rippleAnim.css}"/>
+    <link rel="stylesheet" th:href="@{/css/button.css}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div th:replace="fragments/bgAnim :: bgAnimFragment"></div>
+
+
+<div class="app">
+    <div class="comments-section">
+        <h2>Comments</h2>
+        <div class="comment" th:each="comment : ${comments}">
+            <p th:text="${comment.player} + ' says:'"></p>
+            <p th:text="${comment.comment}"></p>
+            <p th:text="${#dates.format(comment.commentedOn, 'dd-MM-yyyy HH:mm')}"></p>
+        </div>
+        <form th:action="@{/tetris/menu}" method="get">
+            <button class="button" id="back-to-menu">Back to Menu</button>
+        </form>
+    </div>
+
+    <div class="rating-container">
+        <h2>Average Rating</h2>
+        <div class="rating">
+            <div class="ratingAverage">
+                <h1 th:text="${averageRating}"></h1>
+                <div class="star-outer">
+                    <div class="star-inner">
+                        &#9733;
+                        &#9733;
+                        &#9733;
+                        &#9733;
+                        &#9733;
+                    </div>
+                </div>
+                <p th:text="${numOfRatings}"></p>
+            </div>
+
+            <div class="rating-progress"></div>
+        </div>
+    </div>
+
+</div>
+<script th:src="@{/js/bgAnim.js}"></script>
+<script th:src="@{/js/rippleAnim.js}"></script>
+<script th:inline="javascript">
+    var x5starRatingsCount = [[${numOf5StarRatings}]];
+    var x4starRatingsCount = [[${numOf4StarRatings}]];
+    var x3starRatingsCount = [[${numOf3StarRatings}]];
+    var x2starRatingsCount = [[${numOf2StarRatings}]];
+    var x1starRatingsCount = [[${numOf1StarRatings}]];
+
+    let totalRating = 0;
+
+    let data = [
+        { star: 5, count: x5starRatingsCount },
+        { star: 4, count: x4starRatingsCount },
+        { star: 3, count: x3starRatingsCount },
+        { star: 2, count: x2starRatingsCount },
+        { star: 1, count: x1starRatingsCount }
+    ];
+
+    data.forEach(rating => {
+        totalRating += rating.count;
+    });
+
+    data.forEach(rating => {
+        document.querySelector('.rating-progress').innerHTML += `
+            <div class="rating-progress-value"></div>
+            <p>${rating.star} <span class="star">&#9733;</span></p>
+            <div class="progress">
+                <div class="bar" style="width: ${(rating.count / totalRating) * 100}%">
+                </div>
+            </div>
+            <p th:text="${rating.count.toLocaleString()}"></p>        `
+    });
+</script>
+</body>
+</html>

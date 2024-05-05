@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Instructions - Gamestudio Tetris</title>
+    <link rel="stylesheet" th:href="@{/css/gameInfo.css}"/>
+    <link rel="stylesheet" th:href="@{/css/logo.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bgAnim.css}"/>
+    <link rel="stylesheet" th:href="@{/css/rippleAnim.css}"/>
+    <link rel="stylesheet" th:href="@{/css/button.css}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div th:replace="fragments/bgAnim :: bgAnimFragment"></div>
+<div th:replace="fragments/logo :: logoFragment"></div>
+
+<main class="game-instructions">
+    <h1>How to Play Tetris</h1>
+    <section>
+        <h2>Controls</h2>
+        <ul>
+            <li><strong>Move Left:</strong> Press <kbd>A</kbd></li>
+            <li><strong>Move Right:</strong> Press <kbd>D</kbd></li>
+            <li><strong>Move Down:</strong> Press <kbd>S</kbd></li>
+            <li><strong>Rotate Right:</strong> Press <kbd>W</kbd></li>
+            <li><strong>Rotate Left:</strong> Press <kbd>Q</kbd></li>
+            <li><strong>Hold Shape:</strong> Press <kbd>X</kbd></li>
+        </ul>
+    </section>
+
+    <form th:action="@{/tetris/menu}" method="get">
+        <button class="button" id="back-to-menu">Back to Menu</button>
+    </form>
+
+    <section>
+        <h2>Gameplay Tips</h2>
+        <p>To succeed in Tetris, aim to fill complete rows with blocks. Completing rows clears them away and earns you points. Try not to let the blocks reach the top of the screen!</p>
+    </section>
+</main>
+
+
+<!-- jss import -->
+<script th:src="@{/js/bgAnim.js}"></script>
+<script th:src="@{/js/rippleAnim.js}"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+#scoreboard {
+    padding: 20px;
+    overflow-y: auto;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: space-between;
+}
+
+#scoreboard h2 {
+    font-size: 2rem;
+    color: white;
+    text-align: center;
+    margin-top: 230px;
+}
+
+/* Initialize the counter */
+#scoreboard ol {
+    padding-left: 0;
+    list-style-type: none;
+    max-width: 200px;
+    margin-bottom: 360px;
+    margin-left: 80px;
+    counter-reset: scoreboard-counter;
+}
+
+/* Styles for each score item */
+#scoreboard ol li {
+    background-repeat: no-repeat;
+    background-position: center center;
+    position: relative;
+    color: #FFFFFF;
+    font-size: 1rem;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    transition: box-shadow 0.3s ease-in-out;
+    counter-increment: scoreboard-counter;
+    padding: 10px;
+}
+
+/* Display the counter before the content of each list item */
+#scoreboard ol li::before {
+    content: counter(scoreboard-counter) ". ";
+    color: #FFFFFF;
+    font-weight: bold;
+    margin-right: 1ch;
+}
+
+/* Enhance box shadow on hover */
+#scoreboard ol li:hover {
+    box-shadow: 0 0 15px #00FFFF;
+}
+
+.score-number {
+    margin-left: auto;
+}

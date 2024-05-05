@@ -1,0 +1,25 @@
+#comment-input {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    bottom: 200px;
+}
+
+#submit-comment {
+    position: absolute;
+    cursor: pointer;
+    color: white;
+    font-weight: bold;
+    top: 80px;
+    right: 35px;
+}
+
+#comment-game h2 {
+    position: absolute;
+    font-size: 2rem;
+    color: white;
+    text-align: center;
+    margin-bottom: 240px;
+}

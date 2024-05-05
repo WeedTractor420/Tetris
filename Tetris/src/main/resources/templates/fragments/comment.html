@@ -1,0 +1,9 @@
+<div th:fragment="commentForm">
+    <form th:action="@{/tetris/comment}" method="post">
+            <label>
+                <textarea name="comment" placeholder="Write your comment here..." required></textarea>
+            </label>
+            <br>
+            <button class="button" id="submit-comment">Comment</button>
+    </form>
+</div>

@@ -9,6 +9,9 @@ package sk.tuke.gamestudio.game.Core;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import java.util.List;
+
 public class Game {
     private final GameBoard gameBoard;
     @Getter
@@ -21,9 +24,16 @@ public class Game {
     @Getter
     private int score;
     @Getter
+    @Setter
     private GameState state;
     @Getter
     private final ShapeQueue shapeQueue;
+    @Getter
+    private Shape heldShape = null;
+    private boolean canHold = true;
+    @Getter
+    private List<Integer> rowsDeleted;
+
 
     //In constructor, we create main playing board, first shape with information about it, and it adds first shape to the playing board
     public Game(GameBoard gameBoard) {
@@ -34,7 +44,8 @@ public class Game {
         this.currentShape = shapeQueue.getNextShape();
         this.currentShapeCol = gameBoard.getColCount() / 2 - currentShape.getWidth() / 2;
         this.currentShapeRow = 0;
-        gameBoard.addShapeToBoard(currentShape, currentShapeRow, currentShapeCol);
+        addNextShapeToTheGame();
+        gameBoard.updateWithShadow(currentShape, currentShapeRow, currentShapeCol);
     }
 
     public void restartGame() {
@@ -46,11 +57,13 @@ public class Game {
         // Reset the current shape and shape queue
         shapeQueue.reset();
         addNextShapeToTheGame();
+        gameBoard.updateWithShadow(currentShape, currentShapeRow, currentShapeCol);
     }
 
     //main GameTick(What happens before and after players actions)
     //it adds new shape everytime the current shape reaches bottom
     public void gameTick() {
+        gameBoard.updateWithShadow(currentShape, currentShapeRow, currentShapeCol);
         if (!canMoveDown() && !canMoveLeft() && !canMoveRight()) {
             currentShape.setState(ShapeState.AT_BOTTOM);
         }
@@ -59,14 +72,16 @@ public class Game {
             this.state = GameState.WON;
         }
 
-        if (currentShape.getState() == ShapeState.AT_BOTTOM) {
+        if (currentShape.getState() == ShapeState.AT_BOTTOM && state == GameState.PLAYING) {
             //updating score based on number of rows deleted
             //updating only whe player finishes its actions with current shape
-            this.score += 100 * gameBoard.updateBoard();
+            rowsDeleted = gameBoard.updateBoard();
+            this.score += 100 * rowsDeleted.size();
             //setting GameState
             if (!addNextShapeToTheGame()) {
                 this.state = GameState.FAILED;
             }
+            canHold = true;
             currentShape.setState(ShapeState.FALLING);
         }
     }
@@ -157,4 +172,27 @@ public class Game {
             moveCurrentShapeDown();
         }
     }
+
+    public void holdShape() {
+        if (!canHold) return; // Check if holding is currently allowed
+        gameBoard.deleteShapeFromTheBoard(currentShape, currentShapeRow, currentShapeCol);
+        if (heldShape == null) {
+            // Hold the current shape and fetch the next one from the queue
+            heldShape = currentShape;
+            currentShape = shapeQueue.getNextShape();
+        } else {
+            // Swap the held shape with the current shape
+            Shape temp = currentShape;
+            currentShape = heldShape;
+            heldShape = temp;
+        }
+
+        currentShapeCol = gameBoard.getColCount() / 2 - currentShape.getWidth() / 2;
+        currentShapeRow = 0;
+
+        canHold = false; // Disable holding again until the current shape is placed
+        gameBoard.addShapeToBoard(currentShape, currentShapeRow, currentShapeCol); // Add the shape to the board
+        gameBoard.updateWithShadow(currentShape, currentShapeRow, currentShapeCol); // Optionally update shadows
+    }
+
 }

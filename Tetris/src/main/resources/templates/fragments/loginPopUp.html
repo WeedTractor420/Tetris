@@ -1,0 +1,22 @@
+<div th:fragment="loginFragment">
+    <div class="popup-container-login">
+        <h2>Login</h2>
+        <form th:action="@{/users/login}" method="post">
+            <div id="login-form">
+                <label class="input">
+                    <input type="text" name="username" placeholder="Username" required>
+                </label>
+                <label class="input">
+                    <input type="password" name="password" placeholder="Password" required>
+                </label>
+                <button class="button" type="submit">Login</button>
+            </div>
+            <div th:if="${loginError}" th:text="${loginError}" class="error-message active"></div>
+        </form>
+        <p>Don't have an account? <a th:href="@{/users/registerForm}">Create one</a></p>
+        <!-- Button for guest login -->
+        <form th:action="@{/users/guestLogin}" method="post">
+            <button class="button" type="submit">Continue as Guest</button>
+        </form>
+    </div>
+</div>

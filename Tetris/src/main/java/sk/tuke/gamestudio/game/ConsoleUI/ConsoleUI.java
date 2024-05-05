@@ -38,7 +38,6 @@ public class ConsoleUI {
     public void setScoreService(ScoreService scoreService) {this.scoreService = scoreService;}
     @Autowired
     public void setRatingService(RatingService ratingService) { this.ratingService = ratingService; }
-
     @Autowired
     public void setCommentService(CommentService commentService){ this.commentService = commentService;}
 

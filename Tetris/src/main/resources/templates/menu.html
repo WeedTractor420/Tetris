@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gamestudio Tetris</title>
+    <!-- css import -->
+    <link rel="stylesheet" th:href="@{/css/menu_style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bgAnim.css}"/>
+    <link rel="stylesheet" th:href="@{/css/logo.css}"/>
+    <link rel="stylesheet" th:href="@{/css/comment.css}"/>
+    <link rel="stylesheet" th:href="@{/css/rating.css}"/>
+    <link rel="stylesheet" th:href="@{/css/rippleAnim.css}"/>
+    <link rel="stylesheet" th:href="@{/css/scoreBoard.css}"/>
+    <link rel="stylesheet" th:href="@{/css/button.css}"/>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div th:replace="fragments/bgAnim :: bgAnimFragment"></div>
+<div th:replace="fragments/logo :: logoFragment"></div>
+
+
+<div class="container">
+    <div class="left-side-container">
+        <div class="left-panel" id="scoreboard">
+            <h2 class="highlight">Top Scores</h2>
+            <div th:replace="fragments/scoreBoard :: topScoresList"></div>
+        </div>
+    </div>
+
+    <div class="menu-container">
+        <div class="menu-item" id="play-game"><a th:href="@{/tetris/new}">Play Game</a></div>
+        <div class="menu-item" id="average-rating">
+            <a th:href="@{/tetris/menuCommentRateView}">Average Rating and Comments</a>
+        </div>
+        <div class="menu-item" id="game-info"><a th:href="@{/tetris/gameInfo}">Game Info</a></div>
+        <div class="menu-item" id="view-my-rating">
+            <h2 class="highlight">My Rating</h2>
+            <p id="my-rating-display">Loading rating...</p>
+        </div>
+    </div>
+
+    <div class="right-side-container">
+        <div class="right-panel" id="rate-game">
+            <h2 class="highlight">Rate Game</h2>
+            <div th:replace="fragments/rate :: ratingForm"></div>
+        </div>
+        <div class="right-panel" id="comment-game">
+            <h2 class="highlight">Comment Game</h2>
+            <div id="comment-input">
+                <div th:replace="fragments/comment :: commentForm"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- jss import -->
+<script th:src="@{/js/bgAnim.js}"></script>
+<script th:src="@{/js/rippleAnim.js}"></script>
+
+<script th:inline="javascript">
+
+    fetch('/tetris/myRating')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('my-rating-display').textContent = data;
+        })
+        .catch(error => {
+            document.getElementById('my-rating-display').textContent = 'Failed to load rating.';
+        });
+
+
+    // Function to highlight stars up to the clicked one
+    function highlightStars(ratingValue) {
+
+        // Update the hidden input for rating
+        document.querySelector('input[name="rating"]').value = ratingValue;
+
+        document.querySelectorAll('.star').forEach(star => {
+            star.style.color = star.dataset.value <= ratingValue ? 'gold' : 'white';
+        });
+    }
+
+    // Set event listeners for stars
+    document.querySelectorAll('.star').forEach(star => {
+        star.addEventListener('click', function() {
+            highlightStars(this.dataset.value);
+        });
+    });
+</script>
+</body>
+</html>

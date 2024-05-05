@@ -1,0 +1,90 @@
+.container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+h2{
+    position: absolute;
+    font-size: 2rem;
+    color: white;
+    text-align: center;
+    bottom: 450px;
+}
+
+.popup-container-login, .popup-container-register {
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: url("images/menu_image.png") no-repeat center center;
+    background-size: 600px 600px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    z-index: 11;
+}
+
+.popup-container-register{
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.popup-container-login{
+    transform: translate(-50%, -50%);
+}
+
+#login-form, #register-form {
+    width: 300px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.input input, .input textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: white;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+p, .error-message {
+    color: white;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+.error-message {
+    color: red;
+    visibility: hidden;
+}
+
+.error-message.active {
+    visibility: visible;
+}

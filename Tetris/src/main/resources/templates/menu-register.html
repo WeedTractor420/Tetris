@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gamestudio Tetris</title>
+    <link rel="stylesheet" th:href="@{/css/success-popup.css}"/>
+    <link rel="stylesheet" th:href="@{/css/logo.css}"/>
+    <link rel="stylesheet" th:href="@{/css/bgAnim.css}"/>
+    <link rel="stylesheet" th:href="@{/css/rippleAnim.css}"/>
+    <link rel="stylesheet" th:href="@{/css/button.css}"/>
+    <link rel="stylesheet" th:href="@{/css/loginRegisterPopUp.css}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+
+<div th:replace="fragments/bgAnim :: bgAnimFragment"></div>
+<div th:replace="fragments/logo :: logoFragment"></div>
+
+<div class="container">
+    <div id="registerPopup" th:replace="fragments/registerPopUp :: registerFragment"></div>
+</div>
+
+<!-- jss import -->
+<script th:src="@{/js/bgAnim.js}"></script>
+<script th:src="@{/js/rippleAnim.js}"></script>
+</body>
+</html>

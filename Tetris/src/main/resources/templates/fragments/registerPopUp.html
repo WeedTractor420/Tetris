@@ -1,0 +1,21 @@
+<div th:fragment="registerFragment">
+    <div class="popup-container-register">
+        <h2>Register</h2>
+        <form th:action="@{/users/register}" method="post">
+            <div id="register-form">
+                <label class="input">
+                    <input type="text" name="username" placeholder="Choose a username" required>
+                </label>
+                <label class="input">
+                    <input type="email" name="email" placeholder="Enter your email" required>
+                </label>
+                <label class="input">
+                    <input type="password" name="password" placeholder="Create a password" required>
+                </label>
+                <button class="button" type="submit">Register</button>
+                <div th:if="${registerError}" th:text="${registerError}" class="error-message active"></div>
+            </div>
+        </form>
+        <p>Already have an account? <a th:href="@{/users/loginForm}">Login here</a></p>
+    </div>
+</div>
