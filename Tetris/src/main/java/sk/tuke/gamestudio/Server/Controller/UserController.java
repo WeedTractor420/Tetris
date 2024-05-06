@@ -78,4 +78,11 @@ public class UserController {
         request.getSession().setAttribute("isGuest", true); // Additional flag to identify guest users
         return "redirect:/tetris/menu"; // Redirect them to the main game page
     }
+
+    @PostMapping("/logout")
+    public String logoutUser(HttpServletRequest request) {
+        request.getSession().invalidate(); // Invalidate session to clear all attributes
+        return "redirect:/users/loginForm"; // Redirect to the login form after logout
+    }
+
 }

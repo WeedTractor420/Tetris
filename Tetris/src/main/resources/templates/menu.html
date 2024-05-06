@@ -39,6 +39,18 @@
             <h2 class="highlight">My Rating</h2>
             <p id="my-rating-display">Loading rating...</p>
         </div>
+        <!-- Display login only if no user is logged in and not a guest user -->
+        <div class="menu-item" th:if="${session.user == null or session.isGuest}">
+            <form th:action="@{/users/loginForm}" method="get">
+                <button type="submit" class="button">Login</button>
+            </form>
+        </div>
+        <!-- Display logout only if a user is logged in and not a guest -->
+        <div class="menu-item" th:if="${session.user != null and !session.isGuest}">
+            <form th:action="@{/users/logout}" method="post">
+                <button type="submit" class="button">Logout</button>
+            </form>
+        </div>
     </div>
 
     <div class="right-side-container">
